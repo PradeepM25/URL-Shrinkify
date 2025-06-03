@@ -5,49 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Short URL</title>
   <style>
+    :root {
+      --bg-color: #1e1e2f;
+      --text-color: #e0e0e0;
+      --box-bg: #1e1e2f;
+      --input-bg: #1e1e2f;
+      --shadow-light: #282845;
+      --shadow-dark: #141421;
+      --hover-bg: #292944;
+      --link-color: #58a6ff;
+      --table-bg: white;
+      --table-head-color: black;
+      --table-text-color: black;
+      --hover-row: #2a2a3e;
+    }
+
+    body.light {
+      --bg-color: #f0f0f0;
+      --text-color: #111;
+      --box-bg: #fff;
+      --input-bg: #fff;
+      --shadow-light: #ddd;
+      --shadow-dark: #aaa;
+      --hover-bg: #eee;
+      --link-color: #007bff;
+      --table-bg: #fff;
+      --table-head-color: #000;
+      --table-text-color: #000;
+      --hover-row: #f9f9f9;
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
-      background: #1e1e2f;
-      color: #e0e0e0;
+      background: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       margin: 0;
-      animation: fadeIn 1s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      transition: background 0.4s, color 0.4s;
     }
 
     .container {
-      background: #1e1e2f;
-      border: 1px solid white;
+      background: var(--box-bg);
+      border: 1px solid var(--text-color);
       border-radius: 30px;
-      box-shadow: 20px 20px 60px #141421, -20px -20px 60px #282845;
+      box-shadow: 20px 20px 60px var(--shadow-dark), -20px -20px 60px var(--shadow-light);
       padding: 40px;
       max-width: 900px;
       width: 100%;
-      animation: scaleIn 0.6s ease-in-out;
-    }
-
-    @keyframes scaleIn {
-      0% { transform: scale(0.95); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
     }
 
     h1 {
       text-align: center;
       font-weight: 700;
       font-size: 2.5rem;
-      color: #ffffff;
       margin-bottom: 40px;
+    }
+
+    .theme-toggle {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .theme-toggle label {
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle input {
+      transform: scale(1.3);
     }
 
     form {
@@ -62,11 +98,11 @@
       flex: 1;
       min-width: 250px;
       padding: 15px 20px;
-      border: 1px solid white;
+      border: 1px solid var(--text-color);
       border-radius: 20px;
-      background: #1e1e2f;
-      color: #ffffff;
-      box-shadow: inset 8px 8px 16px #141421, inset -8px -8px 16px #282845;
+      background: var(--input-bg);
+      color: var(--text-color);
+      box-shadow: inset 8px 8px 16px var(--shadow-dark), inset -8px -8px 16px var(--shadow-light);
       transition: all 0.4s ease;
     }
 
@@ -76,65 +112,61 @@
 
     input[type="url"]:focus {
       outline: none;
-      background: #292944;
+      background: var(--hover-bg);
       transform: scale(1.02);
       box-shadow: 0 0 15px #007bff80;
     }
 
     button {
       padding: 15px 30px;
-      border: 1px solid white;
+      border: 1px solid var(--text-color);
       border-radius: 20px;
-      background: #1e1e2f;
-      color: #ffffff;
-      box-shadow: 8px 8px 16px #141421, -8px -8px 16px #282845;
+      background: var(--box-bg);
+      color: var(--text-color);
+      box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
       font-weight: bold;
       transition: all 0.3s ease;
     }
 
     button:hover {
-      background: #292944;
+      background: var(--hover-bg);
       transform: scale(1.05);
-      box-shadow: 0 0 15px #58a6ff80;
+      box-shadow: 0 0 15px var(--link-color);
       cursor: pointer;
     }
 
     table {
-      background-color: white;
+      background-color: var(--table-bg);
       width: 100%;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 8px 8px 16px #141421, -8px -8px 16px #282845;
-      color: #ffffff;
-      animation: fadeIn 1.5s ease-in-out;
+      box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+      color: var(--table-text-color);
     }
 
     thead {
-      background-color: white;
-      color: black;
+      background-color: var(--table-bg);
+      color: var(--table-head-color);
     }
 
     th, td {
-      color: black;
       text-align: center;
       padding: 15px;
-      border-bottom: 1px solid #444;
-      transition: background 0.3s ease;
+      border-bottom: 1px solid #ccc;
     }
 
     tbody tr:hover {
-      background-color: #2a2a3e;
+      background-color: var(--hover-row);
       transition: 0.3s;
     }
 
     td a {
-      color: #58a6ff;
+      color: var(--link-color);
       text-decoration: none;
-      transition: color 0.3s ease;
     }
 
     td a:hover {
-      color: #ffffff;
+      color: var(--text-color);
       text-decoration: underline;
     }
 
@@ -156,13 +188,20 @@
 </head>
 <body>
   <div class="container">
+    <div class="theme-toggle">
+      <label>
+        🌙 Dark Mode
+        <input type="checkbox" id="modeToggle">
+      </label>
+    </div>
+
     <h1>🔗 URL Shrinkener</h1>
     <form action="/shortUrls" method="POST">
       <input type="url" name="fullUrl" id="fullUrl" placeholder="Enter your long URL..." required>
       <button type="submit">Shrink</button>
     </form>
 
-    <table class="table table-borderless">
+    <table>
       <thead>
         <tr>
           <th>Full URL</th>
@@ -181,5 +220,26 @@
       </tbody>
     </table>
   </div>
+
+  <script>
+    const toggle = document.getElementById("modeToggle");
+    const body = document.body;
+
+    // Load theme from localStorage
+    if (localStorage.getItem("theme") === "light") {
+      body.classList.add("light");
+      toggle.checked = true;
+    }
+
+    toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        body.classList.add("light");
+        localStorage.setItem("theme", "light");
+      } else {
+        body.classList.remove("light");
+        localStorage.setItem("theme", "dark");
+      }
+    });
+  </script>
 </body>
 </html>
