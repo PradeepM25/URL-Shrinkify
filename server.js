@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
+const dotenv = requrie('./dotenv');
 
-const app = express()
+const app = express();
+dotenv.config();
 
-mongoose.connect('mongodb://localhost:27017/urlShortener', {
+mongoose.connect(process.env.Mongo_URI, {
     useNewUrlParser: true, useUnifiedTopology: true
 });
 app.set('view engine', 'ejs');
