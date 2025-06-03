@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Short URL</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #1e1e2f;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      background: #1e1e2f;
+      border: 1px solid white;
+      border-radius: 30px;
+      box-shadow: 20px 20px 60px #141421, -20px -20px 60px #282845;
+      padding: 40px;
+      max-width: 900px;
+      width: 100%;
+      animation: scaleIn 0.6s ease-in-out;
+    }
+
+    @keyframes scaleIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: #ffffff;
+      margin-bottom: 40px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    input[type="url"] {
+      flex: 1;
+      min-width: 250px;
+      padding: 15px 20px;
+      border: 1px solid white;
+      border-radius: 20px;
+      background: #1e1e2f;
+      color: #ffffff;
+      box-shadow: inset 8px 8px 16px #141421, inset -8px -8px 16px #282845;
+      transition: all 0.4s ease;
+    }
+
+    input[type="url"]::placeholder {
+      color: #aaa;
+    }
+
+    input[type="url"]:focus {
+      outline: none;
+      background: #292944;
+      transform: scale(1.02);
+      box-shadow: 0 0 15px #007bff80;
+    }
+
+    button {
+      padding: 15px 30px;
+      border: 1px solid white;
+      border-radius: 20px;
+      background: #1e1e2f;
+      color: #ffffff;
+      box-shadow: 8px 8px 16px #141421, -8px -8px 16px #282845;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #292944;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #58a6ff80;
+      cursor: pointer;
+    }
+
+    table {
+      background-color: white;
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 8px 8px 16px #141421, -8px -8px 16px #282845;
+      color: #ffffff;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    thead {
+      background-color: white;
+      color: black;
+    }
+
+    th, td {
+      color: black;
+      text-align: center;
+      padding: 15px;
+      border-bottom: 1px solid #444;
+      transition: background 0.3s ease;
+    }
+
+    tbody tr:hover {
+      background-color: #2a2a3e;
+      transition: 0.3s;
+    }
+
+    td a {
+      color: #58a6ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    td a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 576px) {
+      form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      input[type="url"], button {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 URL Shrinkener</h1>
+    <form action="/shortUrls" method="POST">
+      <input type="url" name="fullUrl" id="fullUrl" placeholder="Enter your long URL..." required>
+      <button type="submit">Shrink</button>
+    </form>
+
+    <table class="table table-borderless">
+      <thead>
+        <tr>
+          <th>Full URL</th>
+          <th>Short URL</th>
+          <th>Clicks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% ShortUrls.forEach(url => { %>
+          <tr>
+            <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
+            <td><a href="<%= url.short %>" target="_blank"><%= url.short %></a></td>
+            <td><%= url.clicks %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
