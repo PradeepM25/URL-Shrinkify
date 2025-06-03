@@ -18,16 +18,9 @@ This project includes a frontend web interface and a backend API to create and r
 
 ---
 
-## Demo
-
-You can try the live demo here (add your live deployed URL once deployed):  
-`https://yourdeployedurl.com`
-
----
-
 ## Technologies Used
 
-- Frontend: HTML, CSS, JavaScript
+- Frontend: EJS, CSS
 - Backend: Node.js, Express.js
 - Database: MongoDB (Atlas or local)
 - Libraries: shortid (for generating short IDs), cors
