@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.Mongo_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
