@@ -215,6 +215,9 @@
             <td><a href="<%= url.full %>" target="_blank"><%= url.full %></a></td>
             <td><a href="<%= url.short %>" target="_blank"><%= url.short %></a></td>
             <td><%= url.clicks %></td>
+            <td>
+              <button onclick="deleteUrl('<%= url.short %>')" style="background:none; border:none; color:red; cursor:pointer;">❌ Delete</button>
+            </td>
           </tr>
         <% }); %>
       </tbody>
@@ -240,6 +243,17 @@
         localStorage.setItem("theme", "dark");
       }
     });
+
+    function deleteUrl(short) {
+      fetch(`/${short}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) location.reload();
+          else alert(data.message);
+        })
+        .catch(err => console.error(err));
+    }
+
   </script>
 </body>
 </html>
