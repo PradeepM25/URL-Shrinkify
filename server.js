@@ -3,33 +3,58 @@ const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
 const dotenv = require('dotenv');
 
-const app = express();
-dotenv.config();
+dotenv.config(); 
 
-mongoose.connect(process.env.Mongo_URI, {
-    useNewUrlParser: true, useUnifiedTopology: true
+const app = express();
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('✅ MongoDB connected');
+}).catch((err) => {
+  console.error('❌ MongoDB connection error:', err);
 });
+
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public')); 
 
 app.get('/', async (req, res) => {
-    const ShortUrls = await ShortUrl.find();
-    res.render('index', {ShortUrls: ShortUrls});
+  try {
+    const shortUrls = await ShortUrl.find();
+    res.render('index', { ShortUrls: shortUrls });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
 });
 
 app.post('/shortUrls', async (req, res) => {
-    await ShortUrl.create({full: req.body.fullUrl});
+  try {
+    await ShortUrl.create({ full: req.body.fullUrl });
     res.redirect('/');
-})
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Could not shorten URL');
+  }
+});
 
-app.get("/:short_url", async (req, res) => {
-    const shortUrl = await ShortUrl.findOne({short: req.params.short_url});
-    if(shortUrl == null)
-        res.sendStatus(404)
-    res.redirect(shortUrl.full);
+app.get('/:short_url', async (req, res) => {
+  try {
+    const shortUrl = await ShortUrl.findOne({ short: req.params.short_url });
+    if (!shortUrl) return res.sendStatus(404);
+
     shortUrl.clicks++;
-    shortUrl.save();
-    
-})
+    await shortUrl.save();
+    res.redirect(shortUrl.full);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Redirection error');
+  }
+});
 
-app.listen(process.env.PORT || 5000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
